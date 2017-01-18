@@ -10,7 +10,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
       prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="sample.Controller">
+      fx:controller="FX.Controller">
 
     <Button fx:id="btnHome" layoutX="50.0" layoutY="37.0" mnemonicParsing="false" text="Home"/>
     <Button fx:id="btnHome2" layoutX="105.0" layoutY="37.0" mnemonicParsing="false" text="Home 2"/>

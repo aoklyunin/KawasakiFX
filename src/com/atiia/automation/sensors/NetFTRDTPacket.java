@@ -18,7 +18,7 @@ public class NetFTRDTPacket {
                                       *1 each RDT packet.  actually unsigned.*/
         private int m_uiFTSequence; /*the internal sequence number of the f/t 
                              *data in the RDT packet.  Updated at the internal 
-                             *sample rate of the Net F/T.  actually unsigned.*/
+                             *FX rate of the Net F/T.  actually unsigned.*/
         private int m_uiStatus; /*bitmapped status code from the RDT packet.*/
         private int m_iFx; /*the force in the x-axis, in engineering units*/
         private int m_iFy; /*the force in the y-axis, in engineering units*/
@@ -38,7 +38,7 @@ public class NetFTRDTPacket {
         }
         
         /**Get the FT sequence number of this packet.  The F/T sequence number
-         *increases at the internal sample rate of the Net F/T sensor, and thus
+         *increases at the internal FX rate of the Net F/T sensor, and thus
          *can be used to time-stamp the data.
          *@return FT sequence number of this packet.
          */

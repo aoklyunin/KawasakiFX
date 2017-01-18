@@ -79,7 +79,7 @@ public class NetFTSensor {
              *to output the specified number of samples*/
             NetFTRDTCommand cNetFTCommand = new NetFTRDTCommand( 2, iCount );
             final int HIGH_SPEED_RDT_TIMEOUT = 1500; /*wait at most 1500 ms for
-             *a high-speed sample*/
+             *a high-speed FX*/
             DatagramSocket cNetFTSocket = new DatagramSocket();
             cNetFTSocket.setSoTimeout( HIGH_SPEED_RDT_TIMEOUT );
             cNetFTSocket.connect( m_iaNetFTAddress, RDTPORT );
