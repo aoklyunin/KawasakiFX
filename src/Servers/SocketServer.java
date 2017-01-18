@@ -32,6 +32,8 @@ abstract public class SocketServer {
     int[] lst = new int[9];
     // номер текущего считываемого элемента массива
     private int pos = 0;
+    // длина пакета
+    private int packageSize;
 
     // открываем сокет
     public void openSocket(int port) {
@@ -78,10 +80,11 @@ abstract public class SocketServer {
     }
 
     // конструктор
-    SocketServer(String name) {
+    SocketServer(String name,int packageSize) {
         this.name = name;
         comFifo = new LinkedList<>();
         time = new Timer();
+        this.packageSize = packageSize;
         // запускаем таймер с задержкой в 200мс и с интервалом 200мс
         time.schedule(new TimerTask() {
             @Override
@@ -153,7 +156,7 @@ abstract public class SocketServer {
                         // обнуляем эту строку
                         inStr = "";
                         // если считали 9 элементов, можно обработать команду и считывать заново
-                        if (pos >= 9) {
+                        if (pos >= packageSize) {
                             pos = 0;
                             processIncomingCommand();
                         }

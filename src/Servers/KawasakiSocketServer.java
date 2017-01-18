@@ -12,6 +12,7 @@ public class KawasakiSocketServer extends SocketServer {
     public void setState(int[] state) {
         this.state = state;
     }
+
     public int[] getState() {
         return state;
     }
@@ -22,7 +23,7 @@ public class KawasakiSocketServer extends SocketServer {
     Runnable lastRunnable;
 
     public KawasakiSocketServer(String name) {
-        super(name);
+        super(name,9);
     }
 
     @Override

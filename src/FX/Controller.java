@@ -1,17 +1,19 @@
 package FX;
 
+import Servers.RaspberryServer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import Servers.KawasakiSocketServer;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.RunnableFuture;
 
 public class Controller {
     private KawasakiSocketServer kServer;
+    private RaspberryServer rServer;
     private Timer mTimer;
 
     // остановка контроллера
@@ -26,14 +28,16 @@ public class Controller {
     }
     private void onTime() {
         // будет выполняться по таймеру
+        setCameraVals();
     }
 
 
     @FXML
     public void initialize() {
         kServer = new KawasakiSocketServer("Kawasaki");
-
+        rServer = new RaspberryServer("Malina");
         new Thread(() -> kServer.openSocket(40000)).start();	//Запуск потока
+        new Thread(() -> rServer.openSocket(5005)).start();	//Запуск потока
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -83,6 +87,12 @@ public class Controller {
                 (int) dPosScroll6.getValue(), 20,updateSlidersRunnable));
     }
 
+    private  void setCameraVals(){
+        int [] data = rServer.getData();
+        cameraX.setText((double)data[1]/1000+"");
+        cameraY.setText((double)data[2]/1000+"");
+        cameraR.setText((double)data[3]/1000+"");
+    }
     // задаём значения слайдеров
     private void setSliders() {
         // если кавасаки не создан или нельзя получить от него данные
@@ -108,6 +118,12 @@ public class Controller {
     /*
         Переменные, связывающие объекты в файле разметки и объекты на форме
      */
+    @FXML
+    TextField cameraX;
+    @FXML
+    TextField cameraY;
+    @FXML
+    TextField cameraR;
     @FXML
     Button btnHome;
     @FXML
