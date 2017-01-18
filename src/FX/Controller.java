@@ -8,6 +8,7 @@ import Servers.KawasakiSocketServer;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.RunnableFuture;
 
 public class Controller {
     private KawasakiSocketServer kServer;
@@ -26,6 +27,7 @@ public class Controller {
     private void onTime() {
         // будет выполняться по таймеру
     }
+
 
     @FXML
     public void initialize() {
@@ -58,9 +60,9 @@ public class Controller {
     // обработчики событий
     private void addEvents() {
         // нажатие на кнопку Home
-        btnHome.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> kServer.home1());
+        btnHome.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> kServer.home1(updateSlidersRunnable));
         // нажатие на кнопку Home2
-        btnHome2.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> kServer.home2());
+        btnHome2.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> kServer.home2(updateSlidersRunnable));
         // нажатие на кнопку Совместить
         btnAccess.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> setSliders());
         // нажатие на кнопку двигаться по джоинтам
@@ -70,7 +72,7 @@ public class Controller {
                 (int) jPosScroll3.getValue(),
                 (int) jPosScroll4.getValue(),
                 (int) jPosScroll5.getValue(),
-                (int) jPosScroll6.getValue(), 20));
+                (int) jPosScroll6.getValue(), 20,updateSlidersRunnable));
         // нажатие на кнопку двигаться по декарту
         dBtnMove.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent ->
                 kServer.runInPointD((int) dPosScroll1.getValue(),
@@ -78,7 +80,7 @@ public class Controller {
                 (int) dPosScroll3.getValue(),
                 (int) dPosScroll4.getValue(),
                 (int) dPosScroll5.getValue(),
-                (int) dPosScroll6.getValue(), 20));
+                (int) dPosScroll6.getValue(), 20,updateSlidersRunnable));
     }
 
     // задаём значения слайдеров
@@ -140,4 +142,11 @@ public class Controller {
     Slider dPosScroll6;
     @FXML
     Button dBtnMove;
+
+    Runnable updateSlidersRunnable = new Runnable() {
+        @Override
+        public void run() {
+            setSliders();
+        }
+    };
 }

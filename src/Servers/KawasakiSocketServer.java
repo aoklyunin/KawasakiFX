@@ -3,20 +3,23 @@ package Servers;
 import java.util.*;
 
 public class KawasakiSocketServer extends SocketServer {
-    boolean flgInPosition = false;
-    int rotations[] = new int[6];
-    int positions[] = new int[6];
-    int errors[] = new int[6];
-    int uregs[] = new int[6];
+    private boolean flgInPosition = false;
+    private int rotations[] = new int[6];
+    private int positions[] = new int[6];
+    private int errors[] = new int[6];
+    private int uregs[] = new int[6];
 
     public void setState(int[] state) {
         this.state = state;
     }
-
     public int[] getState() {
         return state;
     }
-    int[] state = new int[6];
+    private int[] state = new int[6];
+
+    // что сделать, окгда кавасаки встанет в заданную точку
+
+    Runnable lastRunnable;
 
     public KawasakiSocketServer(String name) {
         super(name);
@@ -51,11 +54,16 @@ public class KawasakiSocketServer extends SocketServer {
                 System.arraycopy(lst, 3, errors, 0, 6);
                 break;
             case Constants.C_IN_POS:
-                flgInPosition = true;
+                if(lastRunnable!=null){
+                    lastRunnable.run();
+                    lastRunnable = null;
+                }
                 break;
             case Constants.A_DELTA_STATE:
                 System.arraycopy(lst, 3, state, 0, 6);
                 break;
+            default:
+                System.out.println(lst[1]+"пришло от кавасаки, не получилось расшифровать");
         }
     }
 
@@ -65,32 +73,29 @@ public class KawasakiSocketServer extends SocketServer {
     public int[] getPositions() {
         return Arrays.copyOf(positions, 6);
     }
-    public void runInPointD(int x, int y, int z, int o, int a, int t, int speed) {
+
+    public void runInPointD(int x, int y, int z, int o, int a, int t, int speed,Runnable runnable) {
         int[] arr = {0, Constants.C_D_POINT, speed, x, y, z, o, a, t};
-        for (int ar : arr) {
-            System.out.print(ar);
-        }
-        System.out.println();
         addToComFifo(arr);
+        lastRunnable = runnable;
     }
 
-    public void runInPointA(int j1, int j2, int j3, int j4, int j5, int j6, int speed) {
+    public void runInPointA(int j1, int j2, int j3, int j4, int j5, int j6, int speed,Runnable runnable) {
         int[] arr = {0, Constants.C_J_POINT, speed, j1, j2, j3, j4, j5, j6};
-        for (int ar : arr) {
-            System.out.print(ar);
-        }
-        System.out.println();
         addToComFifo(arr);
+        lastRunnable = runnable;
     }
 
-    public void home1() {
+    public void home1(Runnable runnable) {
         int[] arr = {0, Constants.C_HOME1, 0, 0, 0, 0, 0, 0, 0};
         addToComFifo(arr);
+        lastRunnable = runnable;
     }
 
-    public void home2() {
+    public void home2(Runnable runnable) {
         int[] arr = {0, Constants.C_HOME2, 0, 0, 0, 0, 0, 0, 0};
         addToComFifo(arr);
+        lastRunnable = runnable;
     }
 
 
