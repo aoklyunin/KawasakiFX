@@ -1,5 +1,6 @@
 package FX;
 
+import Servers.AndroidServer;
 import Servers.RaspberryServer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,6 +15,7 @@ import java.util.TimerTask;
 public class Controller {
     private KawasakiSocketServer kServer;
     private RaspberryServer rServer;
+    private AndroidServer aServer;
     private Timer mTimer;
 
     // остановка контроллера
@@ -36,8 +38,10 @@ public class Controller {
     public void initialize() {
         kServer = new KawasakiSocketServer("Kawasaki");
         rServer = new RaspberryServer("Malina");
+        aServer = new AndroidServer("Android");
         new Thread(() -> kServer.openSocket(40000)).start();	//Запуск потока
         new Thread(() -> rServer.openSocket(5005)).start();	//Запуск потока
+        new Thread(() -> aServer.openSocket(30000)).start();	//Запуск потока
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

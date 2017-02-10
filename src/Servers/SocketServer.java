@@ -145,6 +145,7 @@ abstract public class SocketServer {
             while (in.available() != -0) {
                 // читаем символ
                 char c = (char) in.readByte();
+                //System.out.print(c);
                 // если это пробел
                 if (c == ' ') {
                     // если до этого был не пробел и считан хотя бы один непробельный символ
