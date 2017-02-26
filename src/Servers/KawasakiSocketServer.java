@@ -21,14 +21,24 @@ public class KawasakiSocketServer extends SocketServer {
     // что сделать, окгда кавасаки встанет в заданную точку
 
     Runnable lastRunnable;
+    ForceSensor sensor;
 
+    public void setSensor(ForceSensor sensor) {
+        this.sensor = sensor;
+    }
     public KawasakiSocketServer(String name) {
         super(name,9);
     }
 
     @Override
     void sendDefaultCommand() {
-        Integer[] arr = {0, Constants.C_SENSOR_VALS, 0, 0, 0, 0, 0, 0, 0};
+        int arrS[] = sensor.getRVals();
+        Integer [] arr  = {0,Constants.C_SENSOR_VALS,0,-arrS[0]/100, arrS[1]/100, -arrS[2]/100, arrS[3]/100, arrS[4]/100, arrS[5]/100};
+        sendValsi(arr);
+    }
+
+    public void sendChangeGravity(){
+        Integer [] arr  = {0,Constants.C_CHANGE_GRAVITY_MODE,0,0,0,0,0,0,0};
         sendValsi(arr);
     }
 
@@ -37,6 +47,7 @@ public class KawasakiSocketServer extends SocketServer {
         switch (lst[1]) {
             case Constants.C_GetPositionAxis:
                 System.arraycopy(lst, 3, rotations, 0, 6);
+                sensor.setJ(rotations);
                 break;
             case Constants.C_GetPosition:
                 System.arraycopy(lst, 3, positions, 0, 6);

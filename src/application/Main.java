@@ -1,4 +1,4 @@
-package FX;
+package application;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -18,11 +18,13 @@ public class  Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        String fxmlFile = "sample.fxml";
+        String fxmlFile = "/application/sample.fxml";
         loader = new FXMLLoader(this.getClass().getResource(fxmlFile));
         Parent root = loader.load();
         stage.setTitle("JavaFX and Maven");
+
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/application/progress.css").toString());
         stage.setScene(scene);
         stage.show();
         stage.setResizable(false);

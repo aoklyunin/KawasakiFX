@@ -11,6 +11,12 @@ public class AndroidServer extends SocketServer {
         return data;
     }
 
+    KawasakiSocketServer kServer;
+
+    public void setkServer(KawasakiSocketServer kServer) {
+        this.kServer = kServer;
+    }
+
     int data [] = new int[9];
 
     public AndroidServer(String name) {
@@ -24,8 +30,8 @@ public class AndroidServer extends SocketServer {
 
     @Override
     void processIncomingCommand() {
+        kServer.addToComFifo(lst);
         System.out.println(Arrays.toString(lst));
-        addToComFifo(lst);
       /*  for (int d:lst){
             System.out.print(d+" ");
         }

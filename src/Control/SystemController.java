@@ -11,7 +11,7 @@ public class SystemController {
     }
     // управление по кнопкам
     public void controllB(){
-        
+
     }
 
 }
